@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+/public
+
+/.vscode
+**lock**
 # testing
 /coverage
 
