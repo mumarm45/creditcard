@@ -15,15 +15,13 @@ function App() {
     const { cards } = await fetchCards();
     dispatch({ type: "list", payload: cards });
   }
-  const name = () => {
-    console.log("a");
-  };
+
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <ListContext.Provider value={{ state, dispatch }}>
-      <h3>Credit Card System</h3> {name()}
+      <h3>Credit Card System</h3>
       <CCform dispatch={dispatch} />
       <h3>Existing Cards</h3>
       <CCList />
