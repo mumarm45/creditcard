@@ -23,9 +23,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Project is running here 
 
-https://codesandbox.io/s/creditcard-5c8lg
+Running code : https://codesandbox.io/s/creditcard-5c8lg
 
-You just need to run the backend on same  http://localhost:8088. 
+Demo: https://5c8lg.csb.app/
+
+API: https://041xs.sse.codesandbox.io/api
+
 
 ## Available Scripts
 
