@@ -3,27 +3,28 @@ import { Form, Button, Col, Alert } from "react-bootstrap";
 import { addCards, luhnCheck } from "../util/api";
 const CCform = props => {
   const { dispatch } = props;
+  const initialFormState = {
+    name: "",
+    cardNumber: "",
+    limit: 0
+  };
   const [validated, setValidated] = useState(false);
   const [validCardNumber, setValidCardNumber] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [name, setName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [limit, setCardLimit] = useState("");
+  const [formState, setFormState] = useState(initialFormState);
   const handleSubmit = event => {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
 
     if (form.checkValidity()) {
-      addCards({ name, cardNumber, limit, balance: 0 })
+      addCards({ ...formState, balance: 0 })
         .then(response => {
           dispatch({
             type: "add",
             payload: response
           });
-          setCardLimit(0);
-          setCardNumber("");
-          setName("");
+          setFormState(initialFormState);
           setValidated(false);
           setErrorMessage("");
         })
@@ -36,8 +37,15 @@ const CCform = props => {
     }
     setValidated(true);
   };
+  const handelChange = event => {
+    const { name, value } = event.target;
+    setFormState(prState => ({
+      ...prState,
+      [name]: value
+    }));
+  };
   const checkLuhn10 = event => {
-    setValidCardNumber(luhnCheck(cardNumber));
+    setValidCardNumber(luhnCheck(formState.cardNumber));
   };
   return (
     <div>
@@ -47,11 +55,10 @@ const CCform = props => {
           <Form.Label>Name</Form.Label>
           <Form.Control
             required
-            onChange={e => {
-              setName(e.target.value);
-            }}
+            name="name"
+            onChange={handelChange}
             type="type"
-            value={name}
+            value={formState.name}
             placeholder="Enter Name"
           />
         </Form.Group>
@@ -60,15 +67,14 @@ const CCform = props => {
           <Form.Label>Card Number</Form.Label>
           <Form.Control
             required
+            name="cardNumber"
             type="text"
             pattern="\d{10,19}"
             maxLength="19"
             minLength="10"
-            onChange={e => {
-              setCardNumber(e.target.value);
-            }}
+            onChange={handelChange}
             onBlur={e => checkLuhn10()}
-            value={cardNumber}
+            value={formState.cardNumber}
             placeholder="Card Number"
           />
           <Form.Control.Feedback type="valid">
@@ -83,11 +89,10 @@ const CCform = props => {
           <Form.Label>Card Limit</Form.Label>
           <Form.Control
             required
-            onChange={e => {
-              setCardLimit(e.target.value);
-            }}
+            name="limit"
+            onChange={handelChange}
             type="number"
-            value={limit}
+            value={formState.limit}
             placeholder="Card Limit"
           />
         </Form.Group>
