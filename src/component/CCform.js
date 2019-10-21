@@ -3,15 +3,16 @@ import { Form, Button, Col, Alert } from "react-bootstrap";
 import { addCards, luhnCheck } from "../util/api";
 const CCform = props => {
   const { dispatch } = props;
-  const initialState = {
+
+  const initialFormState = {
     name: "",
-    cardNumber:"",
-    limit :""
+    cardNumber: "",
+    limit: 0
   };
   const [validated, setValidated] = useState(false);
   const [validCardNumber, setValidCardNumber] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [formState, setFormState] = useState(initialState);
+  const [formState, setFormState] = useState(initialFormState);
   const handleSubmit = event => {
     const form = event.currentTarget;
     event.preventDefault();
@@ -24,7 +25,7 @@ const CCform = props => {
             type: "add",
             payload: response
           });
-          setFormState(initialState);
+          setFormState(initialFormState);
           setValidated(false);
           setErrorMessage("");
         })
@@ -38,11 +39,11 @@ const CCform = props => {
     setValidated(true);
   };
   const handelChange = event => {
-    const {name,value} = event.target;
-    setFormState(prState =>( {
+    const { name, value } = event.target;
+    setFormState(prState => ({
       ...prState,
-       [name]: value
-    }))
+      [name]: value
+    }));
   };
   const checkLuhn10 = event => {
     setValidCardNumber(luhnCheck(formState.cardNumber));
