@@ -3,6 +3,7 @@ import { Form, Button, Col, Alert } from "react-bootstrap";
 import { addCards, luhnCheck } from "../util/api";
 const CCform = props => {
   const { dispatch } = props;
+
   const initialFormState = {
     name: "",
     cardNumber: "",
