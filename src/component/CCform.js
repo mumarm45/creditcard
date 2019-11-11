@@ -3,7 +3,9 @@ import { Form, Button, Col, Alert } from "react-bootstrap";
 import { addCards, luhnCheck } from "../util/api";
 import reducer from "../reducer/CCRedcuer";
 const CCform = props => {
+
   const { addList } = props;
+
   const initialFormState = {
     name: "",
     cardNumber: "",
