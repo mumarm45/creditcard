@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Table } from "react-bootstrap";
-import ListContext from "../Context/ListContext";
-function CCList() {
-  const { state } = useContext(ListContext);
+function CCList(props) {
+  const { list } = props;
   return (
     <Table striped bordered hover>
       <thead>
@@ -14,13 +13,14 @@ function CCList() {
         </tr>
       </thead>
       <tbody>
-        {state.list.map(ls => {
+        {list.map(ls => {
+          const { id, name, cardNumber, balance, limit } = ls;
           return (
-            <tr key={ls.id}>
-              <td>{ls.name}</td>
-              <td>{ls.cardNumber}</td>
-              <td>${ls.balance}</td>
-              <td>${ls.limit}</td>
+            <tr key={id}>
+              <td>{name}</td>
+              <td>{cardNumber}</td>
+              <td>${balance}</td>
+              <td>${limit}</td>
             </tr>
           );
         })}

@@ -1,6 +1,6 @@
 import axios from "axios";
-
-const host = "http://localhost:8088/api";
+// const host = "https://9f7ca8fqnk.execute-api.ap-south-1.amazonaws.com/first/";
+const host = "https://041xs.sse.codesandbox.io/api";
 export async function fetchCards() {
   return axios({ method: "get", url: `${host}/cards` }).then(response => {
     return { cards: response.data };

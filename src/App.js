@@ -1,31 +1,33 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import reducer from "./reducer/CCRedcuer";
-import ListContext from "./Context/ListContext";
 import CCList from "./component/CCList";
 import CCform from "./component/CCform";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { fetchCards } from "./util/api";
 function App() {
-  const [state, dispatch] = useReducer(reducer, {
-    list: []
+  const [list, updateList] = useState(() => {
+    return [];
   });
 
   async function fetchData() {
     const { cards } = await fetchCards();
-    dispatch({ type: "list", payload: cards });
+    updateList(cards);
   }
+
+  const addList = newList => {
+    updateList([...list, newList]);
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
   return (
-    <ListContext.Provider value={{ state, dispatch }}>
+    <div>
       <h3>Credit Card System</h3>
-      <CCform dispatch={dispatch} />
+      <CCform addList={addList} />
       <h3>Existing Cards</h3>
-      <CCList />
-    </ListContext.Provider>
+      <CCList list={list} />
+    </div>
   );
 }
 

@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { Form, Button, Col, Alert } from "react-bootstrap";
 import { addCards, luhnCheck } from "../util/api";
+import reducer from "../reducer/CCRedcuer";
 const CCform = props => {
-  const { dispatch } = props;
+  const { addList } = props;
   const initialFormState = {
     name: "",
     cardNumber: "",
     limit: 0
   };
-  const [validated, setValidated] = useState(false);
-  const [validCardNumber, setValidCardNumber] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [formState, setFormState] = useState(initialFormState);
+  const [
+    { formState, errorMessage, validated, validCardNumber },
+    dispatch
+  ] = useReducer(reducer, {
+    validated: false,
+    validCardNumber: false,
+    errorMessage: "",
+    formState: initialFormState
+  });
   const handleSubmit = event => {
     const form = event.currentTarget;
     event.preventDefault();
@@ -20,32 +26,24 @@ const CCform = props => {
     if (form.checkValidity()) {
       addCards({ ...formState, balance: 0 })
         .then(response => {
-          dispatch({
-            type: "add",
-            payload: response
-          });
-          setFormState(initialFormState);
-          setValidated(false);
-          setErrorMessage("");
+          addList(response);
+          dispatch({ type: "initial" });
         })
         .catch(({ response }) => {
           const { data } = response;
-          setErrorMessage(data.message);
-          setValidCardNumber(true);
+          dispatch({ type: "validate", payload: false });
+          dispatch({ type: "message", payload: data.message });
         });
       return;
     }
-    setValidated(true);
+    dispatch({ type: "validate", payload: true });
   };
   const handelChange = event => {
     const { name, value } = event.target;
-    setFormState(prState => ({
-      ...prState,
-      [name]: value
-    }));
+    dispatch({ type: "resertForm", payload: { ...formState, [name]: value } });
   };
   const checkLuhn10 = event => {
-    setValidCardNumber(luhnCheck(formState.cardNumber));
+    dispatch({ type: "validCard", payload: luhnCheck(formState.cardNumber) });
   };
   return (
     <div>
