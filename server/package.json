@@ -10,8 +10,8 @@
   "author": "Salman Hasrat KHan",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "eslint-config-rallycoding": "^3.2.0",
-    "express": "^4.17.1"
+    "express": "^4.18.2"
   }
 }
